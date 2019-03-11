@@ -31,7 +31,11 @@ function init(){
     camera = new THREE.OrthographicCamera( -0.5, 0.5, -0.5, 0.5, -1000, 1000 );
 
     // The Renderer
-    renderer = new THREE.WebGLRenderer( {  preserveDrawingBuffer: true } );
+    renderer = new THREE.WebGLRenderer({
+        preserveDrawingBuffer: true,
+        alphe: true,
+        antialias: false
+    });
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.autoClear = false;
 

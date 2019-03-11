@@ -23,10 +23,17 @@
                 text-shadow: 1px 1px 0px deeppink;
                 font-size: 12px;
             }
+
+            video#webcam{
+                display: block;
+            }
+            #viewport{
+                display: none;
+            }
         </style>
     </head>
     <body>
-        <video id="video" autoplay></video>
+        <video id="webcam" autoplay></video>
 
 
         <div id="viewport"></div>
@@ -71,8 +78,7 @@
 
             function init(){
                 // Grab Webcam
-                video = document.getElementById( 'video' );
-                video.style.display="none";
+                video = document.getElementById( 'webcam' );
 
                 if ( navigator.mediaDevices && navigator.mediaDevices.getUserMedia ) {
                     var constraints = { video: { width: 1280, height: 720, facingMode: 'user' } };

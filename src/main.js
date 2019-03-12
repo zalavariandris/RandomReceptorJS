@@ -1,7 +1,7 @@
 var camera, renderer, video;
 var maskScene, maskFbo;
 var videoScene, videoFbo;
-var mainScene;
+var scene, buffer, fbo;
 
 init();
 animate();
@@ -36,6 +36,7 @@ function init(){
         alphe: true,
         antialias: false
     });
+    renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.autoClear = false;
 
@@ -71,8 +72,19 @@ function init(){
     maskFbo = new THREE.WebGLRenderTarget(500, 500);
 
     // Construct Main Scene
-    mainScene = new THREE.Scene();
-    mainScene.add(new THREE.Mesh(
+    buffer = new THREE.WebGLRenderTarget(500, 500);
+    fbo = new THREE.WebGLRenderTarget(500, 500);
+    scene = new THREE.Scene();
+    scene.add(new THREE.Mesh(
+        new THREE.PlaneGeometry(),
+        new THREE.MeshBasicMaterial( { 
+            color:"white",
+            map: buffer.texture,
+            side: THREE.DoubleSide
+        })
+    ));
+
+    scene.add(new THREE.Mesh(
         new THREE.PlaneGeometry(), 
         new THREE.ShaderMaterial( {
             vertexShader: "\
@@ -100,6 +112,17 @@ function init(){
             transparent: true
         } )
     ));
+
+    // final scene
+    finalScene = new THREE.Scene();
+    finalScene.add(new THREE.Mesh(
+        new THREE.PlaneGeometry(),
+            new THREE.MeshBasicMaterial( { 
+                color:"white",
+                map: fbo.texture,
+                side: THREE.DoubleSide
+            })
+    ));
 }
 
 function animate(){
@@ -120,7 +143,15 @@ function animate(){
     renderer.setRenderTarget(videoFbo);
     renderer.render(videoScene, camera);
 
+    // render buffer fbo to fbo
+    // render mainScene to fbo
+    renderer.setRenderTarget(fbo);
+    renderer.render(scene, camera);
+
     // Render main scene
     renderer.setRenderTarget(null);
-    renderer.render(mainScene, camera);
+    renderer.render(finalScene, camera);
+
+    renderer.setRenderTarget(buffer);
+    renderer.render(finalScene, camera);
 }

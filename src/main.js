@@ -32,7 +32,7 @@ function init(){
 
     // The Renderer
     renderer = new THREE.WebGLRenderer({
-        preserveDrawingBuffer: true,
+        preserveDrawingBuffer: false,
         alphe: true,
         antialias: false
     });

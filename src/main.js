@@ -42,6 +42,7 @@ function init(){
 
     // add canvas to document
     var viewport = document.getElementById( 'viewport' );
+    renderer.domElement.style.transform = "rotate(180deg)";
     viewport.appendChild( renderer.domElement );
 
     // Construct Video Scene      
